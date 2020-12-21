@@ -3,17 +3,32 @@
 
 jest.mock('../utils/formatValue.ts', () => ({
   __esModule: true,
-  default: jest.fn().mockImplementation((value: number) => {
+  default: jest.fn().mockImplementation(({ value, type }: FormatValueProps) => {
     switch (value) {
       case 6000:
+        if (type === 'outcome') {
+          return '- R$ 6.000,00';
+        }
         return 'R$ 6.000,00';
       case 50:
+        if (type === 'outcome') {
+          return '- R$ 50,00';
+        }
         return 'R$ 50,00';
       case 5950:
+        if (type === 'outcome') {
+          return '- R$ 5.950,00';
+        }
         return 'R$ 5.950,00';
       case 1500:
+        if (type === 'outcome') {
+          return '- R$ 1.500,00';
+        }
         return 'R$ 1.500,00';
       case 4500:
+        if (type === 'outcome') {
+          return '- R$ 4.500,00';
+        }
         return 'R$ 4.500,00';
       default:
         return '';
@@ -27,10 +42,12 @@ import MockAdapter from 'axios-mock-adapter';
 import api from '../services/api';
 import App from '../App';
 
+import { FormatValueProps } from '../utils/formatValue';
+
 const apiMock = new MockAdapter(api);
 
 const wait = (amount = 0): Promise<void> => {
-  return new Promise((resolve) => setTimeout(resolve, amount));
+  return new Promise(resolve => setTimeout(resolve, amount));
 };
 
 const actWait = async (amount = 0): Promise<void> => {
